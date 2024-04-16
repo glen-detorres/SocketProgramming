@@ -16,50 +16,75 @@ public class Server {
 
             System.out.println("Waiting for client...");
 
-            socket = serverSocket.accept();
-            System.out.println("Client accepted");
+            initConnection();
+            readInput();
 
-            input = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-            BufferedReader reader = new BufferedReader(new FileReader("poem.txt"));
-
-            String line = "";
-
-            System.out.println(getLineFromPoem(Integer.valueOf(input.readUTF()), reader));
-
-            while (!line.equals("Over")) {
-                try {
-                    line = input.readUTF();
-                    System.out.println(line);
-                } catch (IOException e) {
-                    System.out.println(e);
-                }
-            }
-            System.out.println("Closing connection");
-            socket.close();
-            input.close();
         } catch (IOException e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
-    public static void main(String args[])
-    {
+
+    public static void main(String args[]) {
         Server server = new Server(5000);
     }
 
-    private static String getLineFromPoem(int input, BufferedReader reader) {
-        int currentLine = 0;
-        String line = "";
-        String poemLine = "";
+    private void initConnection() {
         try {
+            socket = serverSocket.accept();
+            System.out.println("Client accepted");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void readInput() {
+        try {
+            input = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+            String str = "";
+            while (!str.equals("##")) {
+                str = input.readUTF();
+                System.out.println("client input: " + str);
+                getLineFromPoem(str);
+            }
+            closeConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void closeConnection() {
+        try {
+            socket.close();
+            input.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getLineFromPoem(String input) {
+        int currentLine = 0;
+        int poemLineNum = Integer.valueOf(input);
+        String line = "";
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("poem.txt"));
             while ((line = reader.readLine()) != null) {
                 currentLine++;
-                if (currentLine == input) {
-                    poemLine = line;
+                if (currentLine == poemLineNum) {
+                    sendResponse(line);
                 }
             }
         } catch (IOException e) {
             System.out.println(e);
         }
-        return poemLine;
+    }
+
+    private void sendResponse(String poemLine) {
+        try {
+            PrintWriter pr = new PrintWriter(socket.getOutputStream());
+            pr.println(poemLine);
+            pr.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

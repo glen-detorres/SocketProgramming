@@ -1,56 +1,67 @@
 package org.example;
 
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
-import java.net.UnknownHostException;
+import java.util.Scanner;
 
 public class Client {
     private Socket socket =  null;
-    private DataInputStream input = null;
     private DataOutputStream out = null;
+    private InputStreamReader in = null;
 
     public Client(String address, int port) {
         try {
             socket = new Socket(address, port);
-            System.out.println("Connected");
+            System.out.println("Client connected");
 
-            System.out.println("Enter a number: ");
+            //Send to server
+            sendMessage();
 
-            input = new DataInputStream(System.in);
-//            input = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-
-            out = new DataOutputStream(socket.getOutputStream());
-        } catch (UnknownHostException e) {
-            System.out.println(e);
         } catch (IOException e) {
             System.out.println(e);
         }
 
-        String line = "";
+    }
 
-        while (!line.equals("Over")) {
-            try {
-                line = input.readLine();
-                out.writeUTF(line);
-            } catch (IOException e) {
-                System.out.println(e);
-            }
-        }
+    public static void main(String args[]) {
+        Client client = new Client("127.0.0.1", 5000);
+    }
 
+    private void sendMessage() {
+        System.out.println("Enter a number: ");
         try {
-            input.close();
-            out.close();
-            socket.close();
+            out = new DataOutputStream(socket.getOutputStream());
+            Scanner inS = new Scanner(System.in);
+            while (!inS.equals("##")) {
+                String line = inS.nextLine();
+                out.writeUTF(line);
+                //Response from server
+                readResponse();
+            }
+            closeConnection();
         } catch (IOException e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 
-    public static void main(String args[])
-    {
-        Client client = new Client("127.0.0.1", 5000);
+    private void readResponse() {
+        try {
+            in = new InputStreamReader(socket.getInputStream());
+            BufferedReader br = new BufferedReader(in);
+            String str = br.readLine();
+            System.out.println("server: " + str);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void closeConnection() {
+        try {
+            socket.close();
+            in.close();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
