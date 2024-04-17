@@ -3,6 +3,7 @@ package org.example;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.regex.Pattern;
 
 public class Server {
     private Socket socket = null;
@@ -18,6 +19,7 @@ public class Server {
 
             initConnection();
             readInput();
+            closeConnection();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -41,12 +43,19 @@ public class Server {
         try {
             input = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
             String str = "";
-            while (!str.equals("##")) {
+
+            while (!str.equals("end")) {
                 str = input.readUTF();
-                System.out.println("client input: " + str);
-                getLineFromPoem(str);
+                System.out.println("STR " + str);
+                if (inputValidation(str)) {
+                    System.out.println("client input: " + str);
+                    getLineFromPoem(str);
+                } else {
+                    if (!str.equals("end")) {
+                        sendResponse();
+                    }
+                }
             }
-            closeConnection();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -54,8 +63,8 @@ public class Server {
 
     private void closeConnection() {
         try {
-            socket.close();
             input.close();
+            socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -74,7 +83,7 @@ public class Server {
                 }
             }
         } catch (IOException e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -86,5 +95,20 @@ public class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void sendResponse() {
+        try {
+            PrintWriter pr = new PrintWriter(socket.getOutputStream());
+            pr.println("Enter a valid number!");
+            pr.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private boolean inputValidation(String input) {
+        Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
+        return pattern.matcher(input).matches();
     }
 }
