@@ -3,6 +3,7 @@ package org.example;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URL;
 import java.util.regex.Pattern;
 
 public class Server {
@@ -75,7 +76,8 @@ public class Server {
         int poemLineNum = Integer.valueOf(input);
         String line = "";
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("poem.txt"));
+            URL fileUrl = Server.class.getClassLoader().getResource("Poem.txt");
+            BufferedReader reader = new BufferedReader(new FileReader(fileUrl.getFile()));
             while ((line = reader.readLine()) != null) {
                 currentLine++;
                 if (currentLine == poemLineNum) {
