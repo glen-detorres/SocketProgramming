@@ -25,20 +25,10 @@ public class Response {
         }
     }
 
-    public void sendResponse(String poemLine) {
+    public void sendResponse(String response) {
         try {
             PrintWriter pr = new PrintWriter(socket.getOutputStream());
-            pr.println(poemLine);
-            pr.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void sendResponse() {
-        try {
-            PrintWriter pr = new PrintWriter(socket.getOutputStream());
-            pr.println("Enter a valid number!");
+            pr.println(response);
             pr.flush();
         } catch (IOException e) {
             e.printStackTrace();
