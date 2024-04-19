@@ -19,10 +19,20 @@ public class PoemReader {
         try {
             URL fileUrl = Server.class.getClassLoader().getResource("Poem.txt");
             BufferedReader reader = new BufferedReader(new FileReader(fileUrl.getFile()));
-            while ((line = reader.readLine()) != null) {
-                currentLine++;
-                if (currentLine == poemLineNum) {
-                    response.sendResponse(line);
+
+            if (poemLineNum > reader.lines().count() || poemLineNum < 1) {
+                response.sendResponse("Number out of range!");
+            } else {
+                BufferedReader newReader = new BufferedReader(new FileReader(fileUrl.getFile()));
+                while ((line = newReader.readLine()) != null) {
+                    currentLine++;
+                    if (currentLine == poemLineNum) {
+                        if (line.isEmpty()) {
+                            response.sendResponse("Number " + poemLineNum + " is an empty line!");
+                        } else {
+                            response.sendResponse(line);
+                        }
+                    }
                 }
             }
         } catch (IOException e) {

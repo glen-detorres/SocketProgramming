@@ -28,7 +28,7 @@ public class Input {
             Scanner input = new Scanner(System.in);
             String line = "";
             while (!line.equals("end")) {
-                System.out.println("Enter a number: ");
+                System.out.println("Enter a number (Enter end to stop): ");
                 line = input.nextLine();
                 if (!line.equals("end")) {
                     out.writeUTF(line);
@@ -54,13 +54,13 @@ public class Input {
                     poemReader.getLineFromPoem(str);
                 } else {
                     if (!str.equals("end")) {
-                        response.sendResponse();
+                        response.sendResponse("Enter a valid number!");
                     }
                 }
             }
             connection.closeConnection(input);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Closing connection");
         }
     }
 
