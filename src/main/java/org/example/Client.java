@@ -8,7 +8,6 @@ import java.net.Socket;
 
 public class Client {
     private Socket socket =  null;
-    private DataOutputStream out = null;
     private static Logger logger = LogManager.getLogger(Client.class);
 
     public Client(String address, int port) {
