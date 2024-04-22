@@ -1,5 +1,8 @@
 package org.example;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -14,6 +17,7 @@ public class Input {
     private static Response response;
     private static Connection connection;
     private DataOutputStream out = null;
+    private static Logger logger = LogManager.getLogger(Input.class);
 
     public Input(Socket socket) {
         this.socket = socket;
@@ -28,7 +32,7 @@ public class Input {
             Scanner input = new Scanner(System.in);
             String line = "";
             while (!line.equals("end")) {
-                System.out.println("Enter a number (Enter end to stop): ");
+                logger.info("Enter a number (Enter end to stop): ");
                 line = input.nextLine();
                 if (!line.equals("end")) {
                     out.writeUTF(line);
@@ -50,7 +54,7 @@ public class Input {
             while (!str.equals("end")) {
                 str = input.readUTF();
                 if (inputValidation(str)) {
-                    System.out.println("client input: " + str);
+                    logger.info("client input: " + str);
                     poemReader.getLineFromPoem(str);
                 } else {
                     response.sendResponse("Enter a valid number!");
@@ -58,7 +62,7 @@ public class Input {
             }
             connection.closeConnection(input);
         } catch (IOException e) {
-            System.out.println("Closing connection");
+            logger.info("Closing connection");
         }
     }
 

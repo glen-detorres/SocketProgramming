@@ -1,5 +1,8 @@
 package org.example;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -9,6 +12,7 @@ import java.net.Socket;
 public class Connection {
 
     private Socket socket;
+    private static Logger logger = LogManager.getLogger(Connection.class);
 
     public Connection(Socket socket) {
         this.socket = socket;
@@ -17,7 +21,7 @@ public class Connection {
     public Socket initConnection(ServerSocket serverSocket) {
         try {
             socket = serverSocket.accept();
-            System.out.println("Client accepted");
+            logger.info("Client accepted");
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,5 +1,8 @@
 package org.example;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -7,13 +10,14 @@ import java.net.Socket;
 public class Server {
     private Socket socket = null;
     private ServerSocket serverSocket = null;
+    private static Logger logger = LogManager.getLogger(Server.class);
 
     public Server(int port) {
         try {
             serverSocket = new ServerSocket(port);
-            System.out.println("Server started");
+            logger.info("Server started");
 
-            System.out.println("Waiting for client...");
+            logger.info("Waiting for client...");
 
             Connection connection = new Connection(socket);
             socket = connection.initConnection(serverSocket);

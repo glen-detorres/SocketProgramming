@@ -12,6 +12,7 @@ buildNumber.properties
 .classpath
 .project
 .settings/
+server_client_logs.log
 
 # IDEA
 # ----

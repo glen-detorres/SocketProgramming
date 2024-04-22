@@ -1,5 +1,8 @@
 package org.example;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -9,6 +12,7 @@ import java.net.Socket;
 public class Response {
     private InputStreamReader in = null;
     private static Socket socket;
+    private static Logger logger = LogManager.getLogger(Response.class);
     public Response(Socket socket) {
         this.socket = socket;
     }
@@ -18,7 +22,7 @@ public class Response {
             in = new InputStreamReader(socket.getInputStream());
             BufferedReader br = new BufferedReader(in);
             String str = br.readLine();
-            System.out.println("server response: " + str);
+            logger.info("server response: " + str);
             System.out.println();
         } catch (IOException e) {
             e.printStackTrace();
