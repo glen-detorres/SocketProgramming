@@ -32,12 +32,12 @@ public class ServerInputTest {
     void testReadInput_ValidInput(){
         try {
             when(socketMock.getInputStream()).thenReturn(mock(InputStream.class));
-            when(inputMock.readUTF()).thenReturn("16");
-            when(poemReaderMock.getLineFromPoem("16")).thenReturn("Yet knowing how way leads on to way,");
+            when(inputMock.readUTF()).thenReturn("qwerty");
 
             serverInput.readInput();
 
-//            verify(responseMock).sendResponse("Yet knowing how way leads on to way,");
+//            WIP
+//            verify(responseMock).sendResponse("Enter a valid number!");
 
         } catch (IOException e) {
             e.printStackTrace();
