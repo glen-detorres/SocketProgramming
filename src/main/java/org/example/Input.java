@@ -21,7 +21,7 @@ public class Input {
 
     public Input(Socket socket) {
         this.socket = socket;
-        poemReader = new PoemReader(socket);
+        poemReader = new PoemReader();
         response = new Response(socket);
         connection = new Connection(socket);
     }
@@ -55,7 +55,8 @@ public class Input {
                 str = input.readUTF();
                 if (inputValidation(str)) {
                     logger.info("client input: " + str);
-                    poemReader.getLineFromPoem(str);
+                    String poemLine = poemReader.getLineFromPoem(str);
+                    response.sendResponse(poemLine);
                 } else {
                     response.sendResponse("Enter a valid number!");
                 }
