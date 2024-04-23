@@ -9,11 +9,12 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class Response {
+public class ClientResponse {
     private InputStreamReader in = null;
     private static Socket socket;
-    private static Logger logger = LogManager.getLogger(Response.class);
-    public Response(Socket socket) {
+    private static Logger logger = LogManager.getLogger(ClientResponse.class);
+
+    public ClientResponse(Socket socket) {
         this.socket = socket;
     }
 
@@ -24,16 +25,6 @@ public class Response {
             String str = br.readLine();
             logger.info("server response: " + str);
             System.out.println();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void sendResponse(String response) {
-        try {
-            PrintWriter pr = new PrintWriter(socket.getOutputStream());
-            pr.println(response);
-            pr.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }

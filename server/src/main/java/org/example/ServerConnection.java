@@ -9,12 +9,11 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Connection {
-
+public class ServerConnection {
     private Socket socket;
-    private static Logger logger = LogManager.getLogger(Connection.class);
+    private static Logger logger = LogManager.getLogger(ServerConnection.class);
 
-    public Connection(Socket socket) {
+    public ServerConnection(Socket socket) {
         this.socket = socket;
     }
 
@@ -45,4 +44,5 @@ public class Connection {
             e.printStackTrace();
         }
     }
+
 }

@@ -9,10 +9,14 @@
 2. Open project in your IDE.
 
 ## Steps to run
+- Run `mvn clean install`.
+
 - Run the `server` first before running the `client`.
 
-1. To run server, open terminal then run `mvn exec:java@exec-server`
+1. Open terminal and cd to server directory
+2. To run server, open terminal then run `mvn exec:java -Dexec.mainClass="com.example.Server"`
 
 - After the `server is running`, run the client.
 
-1. To run client, open another terminal then run `mvn exec:java@exec-client`
+1. Open another terminal and cd to client directory
+2. then run `mvn exec:java -Dexec.mainClass="com.example.Client"`

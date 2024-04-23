@@ -16,7 +16,7 @@ public class Client {
             logger.info("Client connected");
 
             //Send to server
-            Input input = new Input(socket);
+            ClientInput input = new ClientInput(socket);
             input.sendInput();
         } catch (IOException e) {
             logger.warn(e.getMessage());

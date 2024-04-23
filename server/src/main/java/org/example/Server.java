@@ -19,11 +19,11 @@ public class Server {
 
             logger.info("Waiting for client...");
 
-            Connection connection = new Connection(socket);
+            ServerConnection connection = new ServerConnection(socket);
             socket = connection.initConnection(serverSocket);
 
             //Get input from client
-            Input inputReader = new Input(socket);
+            ServerInput inputReader = new ServerInput(socket);
             inputReader.readInput();
 
         } catch (IOException e) {
