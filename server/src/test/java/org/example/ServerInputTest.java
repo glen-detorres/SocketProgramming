@@ -2,45 +2,70 @@ package org.example;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.powermock.api.mockito.PowerMockito;
 
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.lang.reflect.Method;
 import java.net.Socket;
 
 import static org.mockito.Mockito.*;
 
+@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ServerInputTest {
+    @Mock
     Socket socketMock;
+    @Mock
     DataInputStream inputMock;
+    @Mock
     ServerResponse responseMock;
-    ServerPoemReader poemReaderMock;
+    @Mock
+    PrintWriter printerMock;
+    @Mock
     ServerConnection connectionMock;
-    private ServerInput serverInput;
+    @InjectMocks
+    ServerInput serverInput;
 
     @BeforeEach
     void setUp() {
-        socketMock = mock(Socket.class);
-        inputMock = mock(DataInputStream.class);
-        poemReaderMock = mock(ServerPoemReader.class);
+        MockitoAnnotations.initMocks(this);
         serverInput = new ServerInput(socketMock);
-        responseMock = mock(ServerResponse.class);
-        connectionMock = mock(ServerConnection.class);
     }
 
     @Test
-    void testReadInput_ValidInput(){
-        try {
-            when(socketMock.getInputStream()).thenReturn(mock(InputStream.class));
-            when(inputMock.readUTF()).thenReturn("qwerty");
+    void testReadInput_InvalidInput() throws Exception {
+        when(socketMock.getInputStream()).thenReturn(mock(InputStream.class));
+        when(inputMock.readUTF()).thenReturn("qwerty");
+        PowerMockito.whenNew(PrintWriter.class).withAnyArguments().thenReturn(printerMock);
 
-            serverInput.readInput();
+        serverInput.readInput();
 
-//            WIP
-//            verify(responseMock).sendResponse("Enter a valid number!");
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        verify(responseMock).sendResponse("Enter a valid number!");
     }
+
+//    @Test
+//    void testReadInput_End() throws Exception {
+//        when(socketMock.getInputStream()).thenReturn(mock(InputStream.class));
+//
+//        when(inputMock.readUTF()).thenReturn("end");
+//        PowerMockito.whenNew(ServerConnection.class).withAnyArguments().thenReturn(connectionMock);
+//        doNothing().when(inputMock).close();
+//        doNothing().when(socketMock).close();
+//
+//        serverInput.readInput();
+//
+//        verify(connectionMock).closeConnection(inputMock);
+//        verify(inputMock).close();
+//        verify(socketMock).close();
+//    }
 }

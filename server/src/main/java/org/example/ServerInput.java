@@ -32,13 +32,7 @@ public class ServerInput {
 
             while (!str.equals("end")) {
                 str = input.readUTF();
-                if (inputValidation(str)) {
-                    logger.info("client input: " + str);
-                    String poemLine = serverPoemReader.getLineFromPoem(str);
-                    serverResponse.sendResponse(poemLine);
-                } else {
-                    serverResponse.sendResponse("Enter a valid number!");
-                }
+                processInput(str);
             }
             serverConnection.closeConnection(input);
         } catch (IOException e) {
@@ -46,7 +40,17 @@ public class ServerInput {
         }
     }
 
-    private static boolean inputValidation(String input) {
+    private void processInput(String input) {
+        if (inputNumberValidation(input)) {
+            logger.info("client input: " + input);
+            String poemLine = serverPoemReader.getLineFromPoem(input);
+            serverResponse.sendResponse(poemLine);
+        } else {
+            serverResponse.sendResponse("Enter a valid number!");
+        }
+    }
+
+    private static boolean inputNumberValidation(String input) {
         Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
         return pattern.matcher(input).matches();
     }
