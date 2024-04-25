@@ -23,8 +23,8 @@ public class Server {
             socket = connection.initConnection(serverSocket);
 
             //Get input from client
-            ServerInput inputReader = new ServerInput(socket);
-            inputReader.readInput();
+            ServerInput inputReader = new ServerInput();
+            inputReader.readInput(socket);
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -25,6 +25,7 @@ public class ServerPoemReaderTest {
     @Test
     void testGetLineFromPoem_OutOfRange() {
         assertEquals("Number out of range!", serverPoemReader.getLineFromPoem("-1"));
+        assertEquals("Number out of range!", serverPoemReader.getLineFromPoem("0"));
         assertEquals("Number out of range!", serverPoemReader.getLineFromPoem("100"));
     }
 
