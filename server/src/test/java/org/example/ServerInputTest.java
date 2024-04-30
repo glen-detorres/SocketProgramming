@@ -3,44 +3,29 @@ package org.example;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.Socket;
-
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class ServerInputTest {
-    Socket socketMock;
-    DataInputStream inputMock;
-    ServerResponse responseMock;
-    ServerPoemReader poemReaderMock;
-    ServerConnection connectionMock;
-    private ServerInput serverInput;
+    ServerInput serverInput;
 
     @BeforeEach
     void setUp() {
-        socketMock = mock(Socket.class);
-        inputMock = mock(DataInputStream.class);
-        poemReaderMock = mock(ServerPoemReader.class);
-        serverInput = new ServerInput(socketMock);
-        responseMock = mock(ServerResponse.class);
-        connectionMock = mock(ServerConnection.class);
+        serverInput = new ServerInput();
     }
 
     @Test
-    void testReadInput_ValidInput(){
-        try {
-            when(socketMock.getInputStream()).thenReturn(mock(InputStream.class));
-            when(inputMock.readUTF()).thenReturn("qwerty");
+    void testReadInput_ValidInput() {
+        assertTrue(serverInput.validate("12"));
+    }
 
-            serverInput.readInput();
+    @Test
+    void testReadInput_InvalidInput() {
+        assertFalse(serverInput.validate("qwerty"));
+    }
 
-//            WIP
-//            verify(responseMock).sendResponse("Enter a valid number!");
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    @Test
+    void testReadInput_EmptyInput() {
+        assertFalse(serverInput.validate(""));
     }
 }
