@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Properties;
 
 public class Client {
     private Socket socket =  null;
@@ -24,8 +25,16 @@ public class Client {
 
     }
 
-    public static void main(String args[]) {
-        Client client = new Client("127.0.0.1", 5000);
+    public static void main(String args[]) throws IOException {
+        String rootPath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
+        String appConfigPath = rootPath + "application.properties";
+        Properties properties = new Properties();
+        properties.load(new FileInputStream(appConfigPath));
+
+        int port = Integer.parseInt(properties.getProperty("PORT"));
+        String address = properties.getProperty("ADDRESS");
+
+        Client client = new Client(address, port);
     }
 
 }
