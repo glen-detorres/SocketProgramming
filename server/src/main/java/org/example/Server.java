@@ -11,6 +11,7 @@ import java.util.Properties;
 public class Server {
     private Socket socket = null;
     private ServerSocket serverSocket = null;
+    private static ServerPoemReader serverPoemReader;
     private static Logger logger = LogManager.getLogger(Server.class);
 
     public Server(int port) {
@@ -21,6 +22,9 @@ public class Server {
 
             ServerConnection connection = new ServerConnection(socket);
             socket = connection.initConnection(serverSocket);
+
+            serverPoemReader = new ServerPoemReader();
+            serverPoemReader.readPoemLines();
 
             //Get input from client
             ServerInput inputReader = new ServerInput();
