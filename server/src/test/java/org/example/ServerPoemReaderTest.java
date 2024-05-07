@@ -11,6 +11,7 @@ public class ServerPoemReaderTest {
     @BeforeEach
     void setUp() {
         serverPoemReader = new ServerPoemReader();
+        serverPoemReader.readPoemLines();
     }
     @Test
     void testGetLineFromPoem_ValidInput() {
