@@ -22,13 +22,3 @@ d
 ,client/src/main/java/org/example/Client.java,3\0\30f13de6fcb0c5f8eefc8ea602ef08758bd32902
 >
 server/pom.xml,0\8\08a8b343eb3d041b4e874e74bf19e4275b4be110
-9
-	readme.md,2\7\275d783e298228506068436512433d343feb52aa
-\
-,server/src/main/java/org/example/Server.java,3\e\3ee8cb041f4f1d715af3c756b58b6a9cb357d635
-a
-1server/src/main/java/org/example/ServerInput.java,5\8\58129163ef6d720de75f8eb50e0d96021a0242fb
-f
-6server/src/main/java/org/example/ServerPoemReader.java,a\7\a7e21594b7d78254c5d48c4f96ffd1f8eb6f1502
-j
-:server/src/test/java/org/example/ServerPoemReaderTest.java,c\3\c3929516aaff60286a921b8a88b19e01e9387963
